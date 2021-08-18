@@ -1,0 +1,55 @@
+---
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+  )
+```
+
+
+# About
+
+`EconFreedom` contains the economic freedom scores for countries and US states.
+
+## Installation
+
+```R
+# install.package("devtools")
+devtools::install_github("acforrester/EconFreedom")
+```
+
+## Datasets
+
+### Economic Freedom of the World (EFW)
+
+```{r}
+library(tidyverse)
+
+EconFreedom::efwpnl %>% 
+  filter(iso_code == "USA")
+
+```
+
+
+### Economic Freedom of North America (EFNA)
+
+```{r}
+
+library(tidyverse)
+
+EconFreedom::efna %>% 
+  filter(usps == "IL")
+
+```
+
+
+## Citations
+
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the
+World: 2020 Edition. Fraser Institute.
+
+Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of North
+America 2020. Fraser Institute.
