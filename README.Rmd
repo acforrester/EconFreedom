@@ -5,14 +5,19 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "README/README-fig-"
   )
 ```
 
 
 # About
 
-`EconFreedom` contains the economic freedom scores for countries and US states.
+`EconFreedom` contains the economic freedom scores for countries and US states from two sources: 1) the Economic Freedom of the World (EFW) and 2) the Economic Freedom of North America (EFNA) reports.
+
+[Installation](#installation)
+<br>
+[Datasets](#datasets)
 
 ## Installation
 
@@ -33,6 +38,53 @@ EconFreedom::efwpnl %>%
 
 ```
 
+```{r efw_2018, fig.show='asis', echo=FALSE}
+
+map_dat <- EconFreedom::efwpnl %>% 
+  filter(year == max(year)) %>% 
+  mutate(
+    region = case_when(
+      iso_code == "GBR" ~ "UK",
+      iso_code == "EGY" ~ "Egypt",
+      iso_code == "IRN" ~ "Iran",
+      iso_code == "KGZ" ~ "Kyrgyzstan",
+      iso_code == "COD" ~ "Democratic Republic of the Congo",
+      iso_code == "COG" ~ "Republic of Congo",
+      iso_code == "KOR" ~ "South Korea",
+      iso_code == "RUS" ~ "Russia",
+      iso_code == "SVK" ~ "Slovakia",
+      iso_code == "SYR" ~ "Syria",
+      iso_code == "VEN" ~ "Venezuela",
+      iso_code == "USA" ~ "USA",
+      iso_code == "YEM" ~ "Yemen",
+      TRUE ~ country_name
+    )
+  )
+
+map_wld <- map_data("world") %>% 
+  left_join(., map_dat, by = "region")
+
+
+ggplot(map_wld, aes(long, lat, group = group))+
+  geom_polygon(aes(fill = efw_index ), color = "white")+
+  scale_fill_viridis_c(option = "B",
+                       name = "EFW Score") +
+  theme_classic() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 8 , colour = "black"),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8, face = "bold")
+  ) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Economic Freedom of the World Score (2018)",
+       caption = "Source: Gwartney et al. (2020)"
+       )
+
+
+```
+
+
 
 ### Economic Freedom of North America (EFNA)
 
@@ -45,11 +97,39 @@ EconFreedom::efna %>%
 
 ```
 
+```{r efna_2018, fig.show='asis', echo=FALSE}
+
+map_dat <- EconFreedom::efna %>% 
+  filter(year == max(year)) %>%
+  mutate(region = tolower(state_name))
+
+map_usa <- map_data("state") %>% 
+  left_join(., map_dat, by = c("region"))
+
+ggplot(map_usa, aes(long, lat, group = group))+
+  geom_polygon(aes(fill = efna_index), color = "white")+
+  scale_fill_viridis_c(option = "B",
+                       name = "EFW Score") +
+  theme_classic() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 8 , colour = "black"),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8, face = "bold")
+  ) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Economic Freedom of North America Score (2018)",
+       caption = "Source: Stansel et al. (2020)"
+       )
+
+
+
+```
+
+
 
 ## Citations
 
-James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the
-World: 2020 Edition. Fraser Institute.
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the World: 2020 Edition. Fraser Institute.
 
-Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of North
-America 2020. Fraser Institute.
+Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of North America 2020. Fraser Institute.

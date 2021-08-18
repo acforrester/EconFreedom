@@ -3,7 +3,7 @@
 \docType{data}
 \title{Economic Freedom of North America}
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+Data on economic freedom for the 50 US states from the Stansel et al. (2020) Economic Freedom of North America report.
 }
 \usage{data("efna")}
 \format{
@@ -23,10 +23,10 @@
 %%  ~~ If necessary, more details than the __description__ above ~~
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+  \url{https://www.fraserinstitute.org/studies/economic-freedom}
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+  Dean Stansel, Jose Torra, and Fred McMahon (2020). Economic Freedom of North America 2020. Fraser Institute.
 }
 \examples{
 data(efna)

@@ -2,7 +2,10 @@
 # About
 
 `EconFreedom` contains the economic freedom scores for countries and US
-states.
+states from two sources: 1) the Economic Freedom of the World (EFW) and
+2) the Economic Freedom of North America (EFNA) reports.
+
+[Installation](#installation) <br> [Datasets](#datasets)
 
 ## Installation
 
@@ -45,6 +48,8 @@ EconFreedom::efwpnl %>%
 #> #   regulation <dbl>
 ```
 
+![](README/README-fig-efw_2018-1.png)<!-- -->
+
 ### Economic Freedom of North America (EFNA)
 
 ``` r
@@ -67,6 +72,8 @@ EconFreedom::efna %>%
 #> 10 17     IL    Illinois    1990       5.83          7.10          6.02
 #> # ... with 28 more rows, and 1 more variable: efna_lab_mkt <dbl>
 ```
+
+![](README/README-fig-efna_2018-1.png)<!-- -->
 
 ## Citations
 

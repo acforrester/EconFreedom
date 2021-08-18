@@ -5,7 +5,7 @@
 Economic Freedom of the World
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+Data on economic freedom from the Gwartney et al. (2020) Economic Freedom of the World report.
 }
 \usage{data("efwpnl")}
 \format{
@@ -26,10 +26,10 @@ Economic Freedom of the World
 %%  ~~ If necessary, more details than the __description__ above ~~
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+  \url{https://www.fraserinstitute.org/studies/economic-freedom}
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the World: 2020 Edition. Fraser Institute.
 }
 \examples{
 data(efwpnl)

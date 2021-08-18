@@ -1,16 +1,15 @@
 Package: EconFreedom
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Economic Freedom Scores
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Andrew C. Forrester
+Maintainer: Andrew C. Forrester <ac.forrester@protonmail.ch>
+Description: Contains data from the Economic Freedom of the World and Economic Freedom of North America Reports published by the Fraser Institute and the Cato Institute. Data include country-level data from 1970-present and US state-level data from 1981-present.
+License: CCO
 Encoding: UTF-8
 LazyData: true
-Depends: 
+Depends:
     R (>= 2.10)
-Suggests: 
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
