@@ -2,8 +2,9 @@
 # About
 
 `EconFreedom` contains the economic freedom scores for countries and US
-states from two sources: 1) the Economic Freedom of the World (EFW) and
-2) the Economic Freedom of North America (EFNA) reports.
+states from two sources: 
+1. Economic Freedom of the World (EFW)
+2. Economic Freedom of North America (EFNA)
 
 [Installation](#installation) <br> [Datasets](#datasets)
 
@@ -77,8 +78,6 @@ EconFreedom::efna %>%
 
 ## Citations
 
-James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020).
-Economic Freedom of the World: 2020 Edition. Fraser Institute.
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the World: 2020 Edition. Fraser Institute.
 
-Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of
-North America 2020. Fraser Institute.
+Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of North America 2020. Fraser Institute.
