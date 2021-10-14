@@ -17,7 +17,7 @@ pacman::p_load(tidyverse)
 # EFW Panel Dataset -------------------------------------------------------
 
 # EFW data
-url  = "https://www.fraserinstitute.org/sites/default/files/efw-2020-master-index-data-for-researchers.xlsx"
+url  = "https://www.fraserinstitute.org/sites/default/files/economic-freedom-of-the-world-2021-master-index-data-for-researchers-iso.xlsx"
 file = paste0("data-prep/", basename(url))
 
 if (!file.exists(file)) {
@@ -40,7 +40,7 @@ efwpnl <- readxl::read_excel(file, sheet = 2) %>%
   arrange(iso_code, year)
 
 # save internal data
-usethis::use_data(efwpnl)
+usethis::use_data(efwpnl, overwrite = T)
 
 # EFNA Panel Dataset ------------------------------------------------------
 

@@ -5,11 +5,11 @@
 Economic Freedom of the World
 }
 \description{
-Data on economic freedom from the Gwartney et al. (2020) Economic Freedom of the World report.
+Data on economic freedom from the Gwartney et al. (2021) Economic Freedom of the World report.
 }
 \usage{data("efwpnl")}
 \format{
-  A data frame with 4050 observations on the following 9 variables.
+  A data frame with 4290 observations on the following 9 variables.
   \describe{
     \item{\code{iso_code}}{a character vector}
     \item{\code{year}}{a numeric vector}
@@ -29,7 +29,8 @@ Data on economic freedom from the Gwartney et al. (2020) Economic Freedom of the
   \url{https://www.fraserinstitute.org/studies/economic-freedom}
 }
 \references{
-James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the World: 2020 Edition. Fraser Institute.
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2021). Economic Freedom Dataset, published in
+Economic Freedom of the World: 2021 Annual Report. Fraser Institute.
 }
 \examples{
 data(efwpnl)
