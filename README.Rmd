@@ -10,126 +10,79 @@ knitr::opts_chunk$set(
   )
 ```
 
+# Economic Freedom Data
 
-# About
+[`Installation`](#installation) | [`Datasets`](#datasets) | [`Citations`](#citations) | [`Changelog`](#changelog)
 
-`EconFreedom` contains the economic freedom scores for countries and US states from two sources: 1) the Economic Freedom of the World (EFW) and 2) the Economic Freedom of North America (EFNA) reports.
+## About
 
-[Installation](#installation)
-<br>
-[Datasets](#datasets)
+`EconFreedom` contains the economic freedom scores for countries and US states from 
+two sources: 
+
+1. Economic Freedom of the World (EFW) 
+2. Economic Freedom of North America (EFNA)
+
+To see additional documentation and examples, see [here](docs/index.html).
+
+## Contents
 
 ## Installation
 
-```R
+```{r Init}
 # install.package("devtools")
-devtools::install_github("acforrester/EconFreedom")
+#devtools::install_github("acforrester/EconFreedom")
 ```
 
 ## Datasets
 
 ### Economic Freedom of the World (EFW)
 
-```{r}
-library(tidyverse)
+The Economic Freedom of the World (EFW) report is produced by Gwartney et al.
+and provides a quantitative index of the quality of countries' economic 
+institutions. The index contains the following elements:
 
-EconFreedom::efwpnl %>% 
-  filter(iso_code == "USA")
+| Area      | Description                       |
+| :-------- | :-------------------------------- |
+| Area 1    | Size of Government                |
+| Area 2    | Legal System and Property Rights  |
+| Area 3    | Sound Money                       |
+| Area 4    | Freedom to Trade Internationally  |
+| Area 5    | Regulation                        |
+| Gender Legal Rights Adjustment                |
 
-```
-
-```{r efw_2018, fig.show='asis', echo=FALSE}
-
-map_dat <- EconFreedom::efwpnl %>% 
-  filter(year == max(year)) %>% 
-  mutate(
-    region = case_when(
-      iso_code == "GBR" ~ "UK",
-      iso_code == "EGY" ~ "Egypt",
-      iso_code == "IRN" ~ "Iran",
-      iso_code == "KGZ" ~ "Kyrgyzstan",
-      iso_code == "COD" ~ "Democratic Republic of the Congo",
-      iso_code == "COG" ~ "Republic of Congo",
-      iso_code == "KOR" ~ "South Korea",
-      iso_code == "RUS" ~ "Russia",
-      iso_code == "SVK" ~ "Slovakia",
-      iso_code == "SYR" ~ "Syria",
-      iso_code == "VEN" ~ "Venezuela",
-      iso_code == "USA" ~ "USA",
-      iso_code == "YEM" ~ "Yemen",
-      TRUE ~ country_name
-    )
-  )
-
-map_wld <- map_data("world") %>% 
-  left_join(., map_dat, by = "region")
-
-
-ggplot(map_wld, aes(long, lat, group = group))+
-  geom_polygon(aes(fill = efw_index ), color = "white")+
-  scale_fill_viridis_c(option = "B",
-                       name = "EFW Score") +
-  theme_classic() + 
-  theme(legend.position = "right", 
-        axis.text = element_text(size = 8 , colour = "black"),
-        legend.text = element_text(size = 8),
-        legend.title = element_text(size = 8, face = "bold")
-  ) +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Economic Freedom of the World Score (2018)",
-       caption = "Source: Gwartney et al. (2020)"
-       )
-
-
-```
-
-
+The resulting `EFW` index is an equally weighted average of each area. The index
+is only available for countries that have enough data to construct the index in 
+each year and is therefore spotty in earlier years. The number of countries in
+each year's `EFW` data changes as a result. Be sure to check which countries are
+included in your sample before conducting any empirical cross-country comparisons.
 
 ### Economic Freedom of North America (EFNA)
 
-```{r}
+The Economic Freedom of North America (EFNA) report from Stansel et al. provides
+a quantitative index that measures the quality of economic institutions at the 
+subnational level, viz. the U.S. states.  The index is designed to mimic the
+cross-country equivalent, the EFW, and is comprised of the following indicators.
 
-library(tidyverse)
+| Area      | Description                       |
+| :-------- | :-------------------------------- |
+| Area 1    | Government Spending               |
+| Area 2    | Taxes                             |
+| Area 3    | Labor Market Freedom              |
 
-EconFreedom::efna %>% 
-  filter(usps == "IL")
-
-```
-
-```{r efna_2018, fig.show='asis', echo=FALSE}
-
-map_dat <- EconFreedom::efna %>% 
-  filter(year == max(year)) %>%
-  mutate(region = tolower(state_name))
-
-map_usa <- map_data("state") %>% 
-  left_join(., map_dat, by = c("region"))
-
-ggplot(map_usa, aes(long, lat, group = group))+
-  geom_polygon(aes(fill = efna_index), color = "white")+
-  scale_fill_viridis_c(option = "B",
-                       name = "EFW Score") +
-  theme_classic() + 
-  theme(legend.position = "right", 
-        axis.text = element_text(size = 8 , colour = "black"),
-        legend.text = element_text(size = 8),
-        legend.title = element_text(size = 8, face = "bold")
-  ) +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Economic Freedom of North America Score (2018)",
-       caption = "Source: Stansel et al. (2020)"
-       )
-
-
-
-```
-
-
+The `EFNA` index itself is an equally weighted average of the three areas. 
 
 ## Citations
 
-James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2020). Economic Freedom of the World: 2020 Edition. Fraser Institute.
+James Gwartney, RobertLawson, Joshua Hall, and Ryan Murphy (2021). *Economic Freedom Dataset, published in Economic Freedom of the World: 2021 Annual Report*. Fraser Institute. [www.fraserinstitute.org/economic-freedom/dataset](www.fraserinstitute.org/economic-freedom/dataset)
 
-Dean Stansel, José Torra, and Fred McMahon (2020). Economic Freedom of North America 2020. Fraser Institute.
+Dean Stansel, José Torra, and Fred McMahon (2020). *Economic Freedom of North America 2020*. Fraser Institute. [https://www.fraserinstitute.org/studies/economic-freedom-of-north-america-2020](https://www.fraserinstitute.org/studies/economic-freedom-of-north-america-2020)
+
+## Changelog
+
+- 10/15/2021: Updated the EFW to the 2021 report and added World Bank codes and additional documentation.
+
+
+
+
+
+
