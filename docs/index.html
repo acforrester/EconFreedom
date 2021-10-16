@@ -149,55 +149,14 @@
 </tr>
 </tbody>
 </table>
-<p>The <code>EFNA</code> index itself is an equally weighted average of the three areas. ## Demonstration</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load packages to use</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: pacman</span>
-<span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">plotly</span>,<span class="va">DT</span><span class="op">)</span></code></pre></div>
+<p>The <code>EFNA</code> index itself is an equally weighted average of the three areas.</p>
 </div>
-<div id="economic-freedom-of-the-world-efw-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#economic-freedom-of-the-world-efw-1" class="anchor"></a>Economic Freedom of the World (EFW)</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load the EFW panel</span>
-<span class="fu">EconFreedom</span><span class="fu">::</span><span class="va"><a href="reference/efwpnl.html">efwpnl</a></span> <span class="op">%&gt;%</span> 
-  <span class="co"># keep</span>
-  <span class="fu">arrange</span><span class="op">(</span><span class="op">-</span><span class="va">year</span>, <span class="va">iso_code</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="co"># print data</span>
-  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html">datatable</a></span><span class="op">(</span><span class="va">.</span>, 
-                rownames <span class="op">=</span> <span class="cn">FALSE</span>,
-                extensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Buttons"</span><span class="op">)</span>, 
-                options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-                  dom <span class="op">=</span> <span class="st">"Bfrtip"</span>,
-                  buttons <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"excel"</span>, <span class="st">"pdf"</span><span class="op">)</span>
-                  <span class="op">)</span>
-                <span class="op">)</span></code></pre></div>
-<p><img src="README/README-fig-EFW_Datatable-1.png"><!-- --></p>
-<p><img src="README/README-fig-EFW_Map-1.png"><!-- --></p>
 </div>
-<div id="economic-freedom-of-north-america-efna-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#economic-freedom-of-north-america-efna-1" class="anchor"></a>Economic Freedom of North America (EFNA)</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load the EFNA panel</span>
-<span class="fu">EconFreedom</span><span class="fu">::</span><span class="va"><a href="reference/efna.html">efna</a></span> <span class="op">%&gt;%</span> 
-  <span class="co"># keep</span>
-  <span class="fu">arrange</span><span class="op">(</span><span class="op">-</span><span class="va">year</span>, <span class="va">stfips</span><span class="op">)</span> <span class="op">%&gt;%</span>  
-  <span class="co"># print data</span>
-  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html">datatable</a></span><span class="op">(</span><span class="va">.</span>, 
-                rownames <span class="op">=</span> <span class="cn">FALSE</span>,
-                extensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Buttons"</span><span class="op">)</span>, 
-                options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-                  dom <span class="op">=</span> <span class="st">"Bfrtip"</span>,
-                  buttons <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"excel"</span>, <span class="st">"pdf"</span><span class="op">)</span>
-                  <span class="op">)</span>
-                <span class="op">)</span></code></pre></div>
-<p><img src="README/README-fig-EFNA_Datatable-1.png"><!-- --></p>
-<p><img src="README/README-fig-EFNA_map-1.png"><!-- --> ## Citations</p>
-<p>James Gwartney, RobertLawson, Joshua Hall, and Ryan Murphy (2021). <em>Economic Freedom Dataset, published in Economic Freedom of the World: 2021 Annual Report</em>. Fraser Institute. <a href="www.fraserinstitute.org/economic-freedom/dataset">www.fraserinstitute.org/economic-freedom/dataset</a></p>
+<div id="citations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citations" class="anchor"></a>Citations</h2>
+<p>James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2021). <em>Economic Freedom Dataset, published in Economic Freedom of the World: 2021 Annual Report</em>. Fraser Institute. <a href="www.fraserinstitute.org/economic-freedom/dataset">www.fraserinstitute.org/economic-freedom/dataset</a></p>
 <p>Dean Stansel, José Torra, and Fred McMahon (2020). <em>Economic Freedom of North America 2020</em>. Fraser Institute. <a href="https://www.fraserinstitute.org/studies/economic-freedom-of-north-america-2020" class="uri">https://www.fraserinstitute.org/studies/economic-freedom-of-north-america-2020</a></p>
-</div>
 </div>
 <div id="changelog" class="section level2">
 <h2 class="hasAnchor">
