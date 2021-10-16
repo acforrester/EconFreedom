@@ -63,9 +63,58 @@ comprised of the following indicators.
 | Area 3 | Labor Market Freedom |
 
 The `EFNA` index itself is an equally weighted average of the three
-areas.
+areas. \#\# Demonstration
 
-## Citations
+``` r
+# load packages to use
+if (!require("pacman")) install.packages("pacman")
+#> Loading required package: pacman
+pacman::p_load(tidyverse,plotly,DT)
+```
+
+### Economic Freedom of the World (EFW)
+
+``` r
+# load the EFW panel
+EconFreedom::efwpnl %>% 
+  # keep
+  arrange(-year, iso_code) %>%
+  # print data
+  DT::datatable(., 
+                rownames = FALSE,
+                extensions = c("Buttons"), 
+                options = list(
+                  dom = "Bfrtip",
+                  buttons = c("csv", "excel", "pdf")
+                  )
+                )
+```
+
+![](README/README-fig-EFW_Datatable-1.png)<!-- -->
+
+![](README/README-fig-EFW_Map-1.png)<!-- -->
+
+### Economic Freedom of North America (EFNA)
+
+``` r
+# load the EFNA panel
+EconFreedom::efna %>% 
+  # keep
+  arrange(-year, stfips) %>%  
+  # print data
+  DT::datatable(., 
+                rownames = FALSE,
+                extensions = c("Buttons"), 
+                options = list(
+                  dom = "Bfrtip",
+                  buttons = c("csv", "excel", "pdf")
+                  )
+                )
+```
+
+![](README/README-fig-EFNA_Datatable-1.png)<!-- -->
+
+![](README/README-fig-EFNA_map-1.png)<!-- --> \#\# Citations
 
 James Gwartney, RobertLawson, Joshua Hall, and Ryan Murphy (2021).
 *Economic Freedom Dataset, published in Economic Freedom of the World:
