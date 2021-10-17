@@ -1,0 +1,227 @@
+---
+title: "An Overview of the EFW"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An Overview of the EFW}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r init, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+my_colors <- function (palette = "cb") 
+{
+    cb_palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", 
+        "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+    rcb_palette <- rev(cb_palette)
+    bly_palette <- c("#E69F00", "#0072B2", "#000000", "#56B4E9", 
+        "#009E73", "#F0E442", "#D55E00", "#CC79A7")
+    
+    if (palette == "cb") 
+        return(cb_palette)
+    else if (palette == "rcb") 
+        return(rcb_palette)
+    else if (palette == "bly") 
+        return(bly_palette)
+    else stop("Choose cb, rcb, or bly only.")
+}
+
+
+```
+
+# Introduction
+
+The *Economic Freedom of the World* (EFW) report provides researches with a widely accepted and cited measure of economic institutions, measured for various countries over a long time frame. The `EconFreedom` package provides an easy way of accessing these data in *R* and will be updated with each successive update of the EFW report. The EFW reports are used *extensively* in the economics, political science, and political economy literature as a primary measure of economic institutional quality, i.e. institutions that promote and protect individual liberty, property rights, and freedom of exchange. A simple Google Scholar search of the keywords `economic freedom of the world` yields a total of 3.6 million results (searched 10.16.2021).
+
+The following description comes directly from the Gwartney et al. (2021) EFW report that describes the data.
+
+> The index published in Economic Freedom of the World measures the degree to which the policies and institutions of countries are supportive of economic freedom. The cornerstones of economic freedom are personal choice, voluntary exchange, freedom to enter markets and compete, and security of the person and privately owned property. Forty-two data points are used to construct a summary index, along with a Gender Legal Rights Adjustment to measure the extent to which women have the same level of economic freedom as men. The degree of economic freedom is measured in five broad areas. 
+> --- Gwartney et al. (2021)
+
+The EFW measures economic institutions along 5 primary dimensions, or area. The areas are listed as follows.
+
+| Area      | Description                       |
+| :-------- | :-------------------------------- |
+| Area 1    | Size of Government                |
+| Area 2    | Legal System and Property Rights  |
+| Area 3    | Sound Money                       |
+| Area 4    | Freedom to Trade Internationally  |
+| Area 5    | Regulation                        |
+| Gender Legal Rights Adjustment                |
+
+While the EFW incorporates over 40 different individual measures to calculate the above areas, the `EconFreedom` package currently only provides the main 5 summary indexes and the composite EFW score. I may include the additional measures in a future release of this package; however, I seldom see any on the subindicators used in the empirical literature that leverages the EFW dataset.
+
+## The `EconFreedom` Package
+
+In this article I highlight the usage of this simple data package and elucidate some key caveats with the EFW dataset. My baseline assumption is that the end user will make use of the common [`tidyverse`](https://tidyverse.org/) set of tools to examine and analyze these data. To highlight some features of the data of the data I will also use [`plotly`](https://plotly-r.com/) to make interactive charts.
+
+```{r packages}
+# load packages to use
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse,
+               plotly,
+               DT)
+```
+
+# Loading the `EconFreedom` Dataset
+```{r setup}
+library(EconFreedom)
+```
+
+I will begin with the *EFW* panel dataset.
+
+```{r LoadData}
+data("efwpnl")
+```
+
+
+First, let's see what the first few rows of the data look like and what variables we have available using `head()` to show the first 10 rows. In the first few columns we have the main country ID variables, including the ISO Alpha-3 code, the country name, the data year, and its geographic and income groupings according to the World Bank Group. I added in the World Bank's 3-digit region code and income group to facilitate further merging of these data and analyses. These identifiers are sourced directly from the World Bank [here](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups). The remaining columns are the composite and individual area economic freedom scores.
+```{r efw}
+head(efwpnl %>% arrange(-year, iso_code), n = 10)
+```
+
+# A Quick Descriptive Analysis
+
+Here I will show the basic usage of the EFW data and a brief analysis. Here I 
+will use the `tidyverse` and `plotly` packages to parse and analyze the data.
+
+## Economic Freedom by Region
+
+```{r regions}
+
+p <- efwpnl %>% 
+  filter(year == 2019) %>% 
+  group_by(region_name) %>% 
+  summarize(efw_index = mean(efw_index, na.rm = T)) %>% 
+  ggplot(data = .,
+         aes(x = region_name,
+             y = efw_index))+
+  geom_col(stat = "identity", 
+           width = .75, 
+           aes(fill = region_name)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        legend.position = "none") +
+  scale_fill_manual(values = my_colors("cb")[1:7],
+                    guide = FALSE)+
+  labs(title = "Economic Freedom by Region (2019)",
+       caption = "Source: Gwartney et al. (2021)",
+       x = "",
+       y = "Avg. Economic Freedom Score")
+
+ggplotly(p, tooltip = c("x","y"))
+
+```
+
+Clearly we can see that the North American countries have the highest average EFW scores with East Asia and Europe coming in second and third, respectively. Next, let's look at the pattern for high income v. low income countries.
+
+```{r income}
+
+p <- efwpnl %>% 
+  filter(year == 2019, !is.na(income_group)) %>% 
+  group_by(income_group) %>% 
+  summarize(efw_index = mean(efw_index, na.rm = T)) %>% 
+  ggplot(data = .,
+         aes(x = income_group,
+             y = efw_index))+
+  geom_col(stat = "identity", 
+           width = .75, 
+           aes(fill = income_group)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        legend.position = "none") +
+  scale_fill_manual(values = my_colors("cb")[1:7],
+                    guide = FALSE)+
+  labs(title = "Economic Freedom by World Bank Income Group (2019)",
+       caption = "Source: Gwartney et al. (2021)",
+       x = "",
+       y = "Avg. Economic Freedom Score")
+
+ggplotly(p, tooltip = c("x","y"))
+
+```
+
+# Additional Notes
+
+Having worked with the EFW dataset for the past few years, I want to highlight in this section a few features of the EFW dataset that researchers should pay attention to. While I will add to this list over time, the main issue I want to highlight is the country coverage in the EFW report in the historical data.
+
+### Coverage in the EFW Reports
+
+While the EFW reports have a long history and, therefore, a long time-series for
+each country, the coverage back in time can be spotty depending on where you are
+in the world. It's important to examine your data and check which countries you
+actually have data for. To see this, let's look at the Middle East and North
+Africa (MENA).
+
+```{r coverage}
+
+p <- efwpnl %>% 
+  filter(region_name == "Middle East & North Africa") %>% 
+  mutate(efw_present = !is.na(efw_index)) %>% 
+  select(country_name, year, efw_present) %>% 
+  ggplot(data = .,
+         aes(x  = factor(year),
+             y = country_name))+
+  geom_raster(aes(fill = efw_present)) +
+  scale_fill_manual(values = c("#999999", "#E69F00"),
+                     name = "Data Present",
+                     labels = c("Missing", "Present")) +
+  theme_minimal() +
+  labs(title = "EFW Coverage by Country (MENA)",
+       x = "Years Present",
+       y = "Country")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        axis.text.y = element_text(angle = 30, vjust = 0.5, hjust=1))
+
+ggplotly(p)
+
+```
+
+While we have 20 countries in the region, only 8 countries have complete data 
+going back to 1970.  Furthermore, 4 countries are missing EFW scores up until 
+2009 and 3 countries (Libya, Iraq, and Djibouti) are missing data later than 
+2009.
+
+Fortunately, countries with more available data over time are unsurprisingly 
+higher-income countries.  For example, data coverage in the member countries of 
+the Organisation for Economic Co-operation and Development (OECD) is mostly 
+complete. Some notable exceptions are former countries from the Soviet Union,
+whose data series begin in 1995 (or earlier for Poland and Estonia).
+
+```{r oecd}
+
+oecd <- c("AUS","AUT","BEL","CAN","CHL","CZE","DNK","EST","FIN","FRA","DEU",
+          "GRC","HUN","ISL","IRL","ISR","ITA","JPN","KOR","LUX","MEX","NLD",
+          "NZL","NOR","POL","PRT","SVK","SVN","ESP","SWE","CHE","TUR","GBR",
+          "USA")
+
+p <- efwpnl %>% 
+  filter(iso_code %in% oecd) %>% 
+  mutate(efw_present = !is.na(efw_index)) %>% 
+  select(country_name, year, efw_present) %>% 
+  ggplot(data = .,
+         aes(x  = factor(year),
+             y = country_name))+
+  geom_raster(aes(fill = efw_present)) +
+  scale_fill_manual(values = c("#999999", "#E69F00"),
+                     name = "Data Present",
+                     labels = c("Missing", "Present")) +
+  theme_minimal() +
+  labs(title = "EFW Coverage by Country (OECD)",
+       x = "Years Present",
+       y = "Country")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        axis.text.y = element_text(angle = 30, vjust = 0.5, hjust=1))
+
+ggplotly(p)
+
+```
+
+# References
+
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy (2021). *Economic Freedom Dataset, published in Economic Freedom of the World: 2021 Annual Report*. Fraser Institute. [www.fraserinstitute.org/economic-freedom/dataset](www.fraserinstitute.org/economic-freedom/dataset)
+

@@ -6,8 +6,8 @@
 
 ## About
 
-`EconFreedom` contains the economic freedom scores for countries and US
-states from two sources:
+`EconFreedom` is a data package that contains measures of economic
+freedom for across countries and the U.S. states from two sources:
 
 1.  Economic Freedom of the World (EFW)
 2.  Economic Freedom of North America (EFNA)
@@ -21,7 +21,7 @@ To see additional documentation and examples, see
 
 ``` r
 # install.package("devtools")
-#devtools::install_github("acforrester/EconFreedom")
+devtools::install_github("acforrester/EconFreedom")
 ```
 
 ## Datasets
